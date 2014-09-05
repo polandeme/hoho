@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <title>chat room</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+      .item {
+      	width: 250px;
+      	height: 150px;
+      	margin: 15px;
+      	padding: 20px;
+      	border: 1px solid gray;
+      	font-size: 18px;
+      	border-radius: 3px;
+      }
+      .item:nth-child(even) {
+      		font-size: 18px;
+			margin-left: 300px;
+			border: 1px solid red;
+      }
+      img {
+        float: left;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+  var socket = io();
+  $('form').submit(function() {
+  	var data = {content: $('#m').val(),
+  				username: 'hgrui'};
+
+  	socket.emit('send', data);
+  	$('#m').val('');
+  	return false;
+  });
+
+  socket.on('send', function(msg){
+        $('#messages').append('<div class="item"><img src="http://www.baidu.com/favicon.ico">' + msg + '</div>');
+   });
+  socket.on('disconnect', function() {
+    $('#messages').append($('<div class="item">').text('服务器已断开'));
+  }); 
+  socket.on('reconnect', function() {
+    $('#messages').append($('<div class="item">').text('重启成功'));
+  });
+</script>
+  </body>
+</html>
