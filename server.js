@@ -1,14 +1,27 @@
-var app = require('express')();
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
 var http1 = require('http');
 var cheerio = require('cheerio');
+var path = require('path');
 // var iconv = require('iconv-lite');
 var request = require('request');
 var http = http1.createServer(app);
 var io = require('socket.io').listen(http);
 
+
+app.use(express.static(path.join(__dirname, 'lib')));
+
+app.use(bodyParser());
+
 app.get('/', function(req, res) {
 	res.sendfile('index.html');
 });
+
+var upload = require('./routes/test');
+app.use('/upload', upload);
+// app.use(express.bodyParser());
+// app.use( bodyParser.json() );
 
 io.on('connection', function(socket) {
 	console.log('a user connected');
@@ -30,8 +43,13 @@ io.on('connection', function(socket) {
 				var html = body.toString();
 				var $ = cheerio.load(html);
 				var mesage = $('title').text();
-				console.log(mesage);
-				io.emit('send', mesage);
+				var content = {
+					type: 'url',
+					msg: mesage,
+					add: url
+				};
+				console.log(res.headers);
+				io.emit('send', content);
 
 				// res.on('data', function (chunk) {
 				// 	console.log('datadd');
@@ -79,7 +97,12 @@ io.on('connection', function(socket) {
 			// iconv.decode(msg.content, 'utf8');
 			// msg.content.toString('utf-8');
 			console.log('bupipi');
-			io.emit('send', msg.content);
+			var content = {
+				type: 'msg',
+				msg: msg.content,
+				img: 'img/test.jpg'
+			}
+			io.emit('send', content);
 		}
 		
 	});

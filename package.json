@@ -4,7 +4,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "body": "^4.5.0",
+    "body-parser": "^1.8.1",
     "cheerio": "^0.17.0",
+    "connect-multiparty": "^1.2.4",
     "express": "^4.8.8",
     "iconv-lite": "^0.4.4",
     "request": "^2.42.0",

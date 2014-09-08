@@ -5,9 +5,9 @@
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #chat { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      #chat input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      #chat button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
@@ -28,19 +28,40 @@
       img {
         float: left;
       }
+  #wrap {
+    border: 1px solid red;
+    height: 400px;
+    width: 400px;
+  }
     </style>
   </head>
   <body>
+<form action="/upload" method="post" >
+  <input type="text" name="text">
+  <input type="submit" value="dses">
+</form>
+<div id="wrap" width="400px" height="400px"  ondrop = "drop(event)" ondragover="allowDrop(event)">
+  </div>
+  <div id="upload"></div>
+  <div id="img" draggable="true" ondragstart="drag(event)" width="300" height="300">
+
+
     <ul id="messages"></ul>
-    <form action="">
+    <form action="" id="chat">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
+
+
+
+
+
     <script src="/socket.io/socket.io.js"></script>
 
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="main.js"></script>
 <script>
   var socket = io();
-  $('form').submit(function() {
+  $('#chat').submit(function() {
   	var data = {content: $('#m').val(),
   				username: 'hgrui'};
 
@@ -50,7 +71,14 @@
   });
 
   socket.on('send', function(msg){
-        $('#messages').append('<div class="item"><img src="http://www.baidu.com/favicon.ico">' + msg + '</div>');
+        if(msg.type === 'url') {
+           var a = document.createElement('a');
+          a.href = msg.add;
+          $('#messages').append('<div class="item"><img src=http://' + a.hostname + '/favicon.ico' + '>' 
+                              + '<a href='+ msg.add +'>'+ msg.msg + '</a></div>');
+        } else {
+          $('#messages').append('<div class="item">' + msg.msg + '</div>' );
+        }
    });
   socket.on('disconnect', function() {
     $('#messages').append($('<div class="item">').text('服务器已断开'));
