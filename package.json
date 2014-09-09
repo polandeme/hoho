@@ -10,6 +10,7 @@
     "connect-multiparty": "^1.2.4",
     "express": "^4.8.8",
     "iconv-lite": "^0.4.4",
+    "mysql": "git://github.com/felixge/node-mysql",
     "request": "^2.42.0",
     "socket.io": "^1.1.0"
   }
