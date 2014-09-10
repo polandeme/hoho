@@ -9,7 +9,6 @@ var request = require('request');
 var http = http1.createServer(app);
 var io = require('socket.io').listen(http);
 
-
 app.use(express.static(path.join(__dirname, 'lib')));
 
 app.use(bodyParser());
@@ -18,7 +17,7 @@ app.get('/', function(req, res) {
 	res.sendfile('index.html');
 });
 
-var upload = require('./routes/test');
+var upload = require('./routes/images');
 app.use('/upload', upload);
 // app.use(express.bodyParser());
 // app.use( bodyParser.json() );

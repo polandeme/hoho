@@ -4,26 +4,35 @@ var fs = require('fs');
 var multipartMiddleware = multipart();
 var router  = express.Router();
 var mysql = require('mysql');
-var client = mysql.createConnection({
+var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
-	password:''
+	password:'',
+	database: 'hoho'
 });
-
+connection.connect();
 router.post('/', multipartMiddleware, function(req,res) {
 	console.log(req.files.file.path);
 	var tmp_path = req.files.file.path;
 	var target_path = __dirname + req.files.file.name;
 	fs.readFile(tmp_path, function (err, data){
 	    fs.writeFile(target_path, data, function (err) {
-	    	client.query('CREATE DATABASE node', function(err) {
-	    		if(err){
-	    			console.log('-d-d-d-d-d');
-	    			client.end();
-	    			throw err;
+	    	var post = {
+	    			url_date: new Date().getTime(),
+	    			url_vote_up: 0,
+	    			url_vote_down: 0,
+	    			url_del: 0,
+	    			// url_add: 
+	    			url_title: 'dsss'
+	    		}
+	    	connection.query('INSERT INTO ho_url SET ?', post,  function(err,  result) {
+	    		if(err) {
+	    			console.log('error insert');
+	    		}else {
+	    			console.log('success ');
 	    		}
 	    	});
-	    	console.log(data);
+
 		    if(err){
 		    	console.log('------');
 		    }else {
