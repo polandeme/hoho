@@ -19,8 +19,6 @@ app.get('/', function(req, res) {
 
 var upload = require('./routes/images');
 app.use('/upload', upload);
-// app.use(express.bodyParser());
-// app.use( bodyParser.json() );
 
 io.on('connection', function(socket) {
 	console.log('a user connected');
