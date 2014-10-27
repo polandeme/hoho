@@ -34,7 +34,6 @@ io.on('connection', function(socket) {
 			} else {
 				var url = 'http:\\\\' + msg.content;
 			}
-			console.log(url);
 			request.get(url, function(e, res, body) {
 
 				res.setEncoding('utf-8');
@@ -49,51 +48,9 @@ io.on('connection', function(socket) {
 				console.log(res.headers);
 				io.emit('send', content);
 
-				// res.on('data', function (chunk) {
-				// 	console.log('datadd');
-				// 	data += chunk;
-				// });
-
-				// res.on('end', function() {
-				// 	console.log('end');
-				// 	var html = data.toString();
-				// 	var $ = cheerio.load(html);
-				// 	var mesage = $('title').text();
-				// 	// iconv.decode(mesage, 'utf8');
-				// 	// console.log(mesage);
-				// 	console.log(mesage);
-				// 	io.emit('send', mesage);
-				// })
-				// .on('error', function() {
-				// 	console.log('-=-=-=-=-');
-				// 	io.emit('send', 'error');
-				// });
 			})
-			// http1.get(url, function(res) {
-			// 	console.log(res.headers['content-type']);
-			// 	res.setEncoding('utf-8');
-
-			// 	res.on('data', function (chunk) {
-			// 		data += chunk;
-			// 	});
-
-			// 	res.on('end', function() {
-			// 		var html = data.toString();
-			// 		var $ = cheerio.load(html);
-			// 		var mesage = $('title').text();
-			// 		// iconv.decode(mesage, 'utf8');
-			// 		// console.log(mesage);
-			// 		io.emit('send', mesage);
-			// 	})
-			// 	.on('error', function() {
-			// 		console.log('-=-=-=-=-');
-			// 		io.emit('send', 'error');
-			// 	});
-			// });
 		
 		} else{
-			// iconv.decode(msg.content, 'utf8');
-			// msg.content.toString('utf-8');
 			console.log('bupipi');
 			var content = {
 				type: 'msg',
@@ -106,7 +63,6 @@ io.on('connection', function(socket) {
 	});
 
 });
-
 
 var server = http.listen(3000, function() {
 	console.log('listing on port %d', server.address().port)
